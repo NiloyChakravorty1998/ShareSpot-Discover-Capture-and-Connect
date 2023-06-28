@@ -1,0 +1,2 @@
+# ShareSpot-Discover-Capture-and-Connect
+ShareSpot is an innovative platform that enables users to discover, capture, and share their favorite places with images and location. With a robust RESTful API built using Express.js and a MongoDB database, users can seamlessly store and retrieve data. The user-friendly React front-end interface enhances the overall experience, fostering community engagement and exploration.
