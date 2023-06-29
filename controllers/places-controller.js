@@ -1,5 +1,6 @@
 const HttpError = require('../models/http-error');
 const {validationResult } = require('express-validator') 
+const {getCoordsForAddress} = require('../util/location')
 
 let DUMMY_PLACES = [
     {
@@ -35,20 +36,28 @@ module.exports = {
             });
             if(!places || places.length === 0)
             {
-                throw new HttpError('Could not any place with that user id', 404 );
+              return next(new HttpError('Could not any place with that user id', 404 ));
             }
             res.json({places});
     },
 
-    createPlace : (req, res, next) => {
+    createPlace : async (req, res, next) => {
         const errors = validationResult(req); // check the validation for fields 
         //we mentioned in routes
         if(!errors.isEmpty())
         {
-            console.log(errors);
-            throw new ('Invalid user input', 422);
+            next(new HttpError('Invalid inputs passed, please check your data'), 422);
         }
-        const { title, description, coordinates, address, creator } = req.body;
+
+        const { title, description,  address, creator } = req.body;
+        let coordinates;
+        try{
+             coordinates = await getCoordsForAddress(address);
+        } catch (error)
+        {
+            return next(error);
+        }
+        
         const createdPlace = {
             id: Date.now().toString(),
             title,
