@@ -1,4 +1,5 @@
-const API_KEY = 'AIzaSyBTikQ2khpzcXNfUW19H3Vxnj8jxv2DArA';
+const dotenv = require('dotenv').config();
+const API_KEY = process.env.API_KEY;
 const axios = require('axios')
 const  HttpError = require('../models/http-error')
 
@@ -13,6 +14,7 @@ module.exports = {
         }
 
         const coordinates = data.results[0].geometry.location;
+        console.log(coordinates);
         return coordinates;
     }
 }
